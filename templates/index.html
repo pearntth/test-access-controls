@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<div class="container index mt-5">
+  <h3>Welcome, {{ request.user.first_name }}</h3>
+  <br>
+  <h4>Contacts</h4>
+  <div class="contact-table mt-3">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Phone Number</th>
+          <th scope="col" class="text-center">View</th>
+          <th scope="col" class="text-center">Update</th>
+          <th scope="col" class="text-center">Delete</th>
+        </tr>
+      </thead>
+      {% for contact in contacts %}
+      <tbody>
+        <tr>
+          <th scope="row">{{forloop.counter }}</th>
+          <td>{{ contact.first_name }} {{ contact.last_name }}</td>
+          <td>{{ contact.phone_number }}</td>
+          <td class="text-center"><a href="{% url 'view_contact' id=contact.id %}"><i
+                class="fa-solid fa-magnifying-glass text-success"></i></a></td>
+          <td class="text-center">
+            {% if contact.added_by == request.user %}
+            <a href="{% url 'update_contact' id=contact.id %}" class="text-dark">Update</a>
+            {% else %}
+            {% if request.user.is_superuser %}
+            <a href="{% url 'update_contact' id=contact.id %}" class="text-dark">Update</a>
+            {% else %}
+            <i class="fa-solid fa-circle-xmark text-secondary"></i>
+            {% endif %}
+            {% endif %}
+          </td>
+          <td class="text-center">
+            {% if contact.added_by == request.user %}
+            <a href="{% url 'delete_contact' id=contact.id %}" onclick="return confirm('Are you sure?')"
+              class="text-danger">Delete</a>
+            {% else %}
+            {% if request.user.is_superuser %}
+            <a href="{% url 'delete_contact' id=contact.id %}" onclick="return confirm('Are you sure?')"
+              class="text-danger">Delete</a>
+            {% else %}
+            <i class="fa-solid fa-circle-xmark text-secondary">
+            {% endif %}
+            {% endif %}
+          </td>
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="actions-btn mt-2 mb-3">
+    <button type="" class="btn btn-dark me-3"><a href="{% url 'create_contact' %}">Add a new contact</a></button>
+  </div>
+  {% endblock %}

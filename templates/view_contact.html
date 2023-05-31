@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<div class="container view">
+    <div class="header view">
+        <h3>Contact Details</h3>
+    </div>
+    <br>
+    <div class="contact-details">
+        <div class="row">
+            <div class="d-flex">
+                <strong>Name:</strong>
+                <p>{{ contact.first_name }} {{ contact.last_name }}</p>
+            </div>
+            <div class="d-flex">
+                <strong>Phone Number:</strong>
+                <p>{{ contact.phone_number }}</p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <a href="{% url 'index' %}" class="btn btn-dark">Back</a>
+</div>
+{% endblock %}
